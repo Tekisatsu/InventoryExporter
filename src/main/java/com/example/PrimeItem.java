@@ -45,6 +45,10 @@ public class PrimeItem extends Data {
         }
         catch (NumberFormatException e){
             System.out.println("Error parsing data or no amount given: " + e.getMessage());
+            try {ducats = Integer.parseInt(split[split.length-1]);}
+            catch (NumberFormatException e1){
+                System.out.println("Error parsing data or no amount given: " + e.getMessage());
+            };
         }
         if (ducats == 0) {
             System.out.println("No ducats given");
@@ -52,9 +56,11 @@ public class PrimeItem extends Data {
         }
         result.add(amount);
         //Finding the Prime keyword for getting the correct data for name and ducats.
-        //We are skipping over the first and last index on purpose, as we already know they are not relevant for finding the name.
-        for (int i = 1; i < split.length-1; i++) {
-            System.out.println(split[i]);
+        //We are skipping the last index on purpose, as we already know they are not relevant for finding the name.
+        for (int i = 0; i < split.length-1; i++) {
+            if (split[i].equals(amount)){
+                continue;
+            }
             if (split[i].equals("X")) {
                 continue;
             }
@@ -63,12 +69,5 @@ public class PrimeItem extends Data {
         result.add(name.trim());
         result.add(ducats);
         return result;
-    }
-
-    public static void main(String[] args) {
-        String string = "2 X Acceltra Prime Barrel 200";
-        ArrayList<Object> data = parseItem(string);
-        PrimeItem p1 = new PrimeItem(data.get(0), data.get(1), data.get(2));
-        System.out.println(p1.toString());
     }
 }
