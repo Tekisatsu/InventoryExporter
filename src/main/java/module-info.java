@@ -4,5 +4,5 @@ module com.example.inventoryexporter {
 
 
     opens com.example.inventoryexporter to javafx.fxml;
-    exports com.example.inventoryexporter;
+    exports com.example;
 }

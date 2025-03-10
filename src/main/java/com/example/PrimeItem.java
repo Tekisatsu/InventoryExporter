@@ -1,18 +1,32 @@
 package com.example;
 
-import java.security.spec.ECField;
 import java.util.ArrayList;
 
+/**
+ * Extends data for handling prime items.*/
 public class PrimeItem extends Data {
-    PrimeItem(Integer amount, String name, Integer ducats) {
-        this.amount = amount;
-        this.name = name;
-        this.ducats = ducats;
+    /**
+     * @param amount Object will be turned into an int.
+     * @param name Object will be turned into a string
+     * @param ducats Object will be turned into an int
+     * @exception NumberFormatException Will be thrown when invalid data is provided.*/
+    PrimeItem(Object amount, Object name, Object ducats) {
+        try {
+            this.amount = Integer.parseInt(amount.toString());
+            this.name = name.toString();
+            this.ducats = Integer.parseInt(ducats.toString());
+        }
+        catch (NumberFormatException e) {
+            System.out.println("PrimeItem contructor error. Invalid data: "+e.getMessage());
+        }
     }
+
     /**Parses the provided string into an ArrayList.
      * @param s String in the format: amount name ducats
-     * @return Returns and Arraylist in the format: amount,name,ducats*/
-    public static ArrayList<Object> parseData(String s){
+     * @return Returns and Arraylist in the format: amount,name,ducats
+     * @exception NumberFormatException when no amount is given (default to 1) or is missing ducat amount.
+     * @implNote Parses only one item string at a time.*/
+    public static ArrayList<Object> parseItem(String s){
         if (s == null) return null;
         if (s.length() == 0) return null;
 
@@ -27,7 +41,7 @@ public class PrimeItem extends Data {
         //Getting the amount of an item and it's ducat value.
         try {
             amount = Integer.parseInt(split[0]);
-            ducats = Integer.parseInt(split[split.length-1]);
+            ducats = Integer.parseInt(split[split.length-1])/amount;
         }
         catch (NumberFormatException e){
             System.out.println("Error parsing data or no amount given: " + e.getMessage());
@@ -37,21 +51,24 @@ public class PrimeItem extends Data {
             return new ArrayList<>();
         }
         result.add(amount);
-        //Finding the Prime keyword for getting the correct data for name and ducats
-        for (int i = 0; i < split.length; i++) {
-            if (split[i] == String.valueOf(amount)) {
+        //Finding the Prime keyword for getting the correct data for name and ducats.
+        //We are skipping over the first and last index on purpose, as we already know they are not relevant for finding the name.
+        for (int i = 1; i < split.length-1; i++) {
+            System.out.println(split[i]);
+            if (split[i].equals("X")) {
                 continue;
             }
-            else if (split[i] == "X") {
-                continue;
-            }
-            else if (split[i] == String.valueOf(ducats)) {
-                continue;
-            }
-            name = name + split[i];
+            name = name + split[i]+" ";
         }
-        result.add(name);
+        result.add(name.trim());
         result.add(ducats);
         return result;
+    }
+
+    public static void main(String[] args) {
+        String string = "2 X Acceltra Prime Barrel 200";
+        ArrayList<Object> data = parseItem(string);
+        PrimeItem p1 = new PrimeItem(data.get(0), data.get(1), data.get(2));
+        System.out.println(p1.toString());
     }
 }
