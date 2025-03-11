@@ -26,8 +26,12 @@ public class InventoryApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ItemsToFile itemsToFile = new ItemsToFile();
+        textArea.setPrefHeight(400);
+        textArea.setPrefWidth(250);
+        outputTextArea.setPrefHeight(400);
+        outputTextArea.setPrefWidth(250);
         outputTextArea.setEditable(false);
+        ItemsToFile itemsToFile = new ItemsToFile();
         BorderPane pane = new BorderPane();
         Button add = new Button("Add");
         add.setOnAction(e -> {
