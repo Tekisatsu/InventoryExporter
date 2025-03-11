@@ -36,39 +36,38 @@ public class PrimeItem extends Data implements Serializable {
         s.trim();
         String[] split = s.split(" ");
         String name = "";
-        Integer amount = 1;
-        Integer ducats = 0;
+        Integer a = 1;
+        Integer d = 0;
         ArrayList<Object> result = new ArrayList<>();
         //Getting the amount of an item and it's ducat value.
         try {
-            amount = Integer.parseInt(split[0]);
-            ducats = Integer.parseInt(split[split.length-1])/amount;
+            a = Integer.parseInt(split[0]);
+            d = Integer.parseInt(split[split.length-1])/a;
         }
         catch (NumberFormatException e){
             System.out.println("Error parsing data or no amount given: " + e.getMessage());
-            try {ducats = Integer.parseInt(split[split.length-1]);}
+            try {d = Integer.parseInt(split[split.length-1]);}
             catch (NumberFormatException e1){
                 System.out.println("Error parsing data or no amount given: " + e.getMessage());
-            };
+            }
         }
-        if (ducats == 0) {
+        if (d == 0) {
             System.out.println("No ducats given");
             return new ArrayList<>();
         }
-        result.add(amount);
+        result.add(a);
         //Finding the Prime keyword for getting the correct data for name and ducats.
         //We are skipping the last index on purpose, as we already know they are not relevant for finding the name.
-        for (int i = 0; i < split.length-1; i++) {
-            if (split[i].equals(amount)){
-                continue;
-            }
-            if (split[i].equals("X")) {
-                continue;
-            }
-            name = name + split[i]+" ";
+        //Do a less janky name parsing at some point.
+        int sIndex = 1;
+        if (split[1].equals("X")) {
+            sIndex = 2;
+        }
+        for (int i = sIndex; i < split.length-1; i++) {
+            name = name + split[i] + " ";
         }
         result.add(name.trim());
-        result.add(ducats);
+        result.add(d);
         return result;
     }
 }
