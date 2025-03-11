@@ -1,8 +1,9 @@
 package com.example;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-abstract class Data {
+abstract class Data implements Serializable {
     String name;
     Integer amount;
     Integer ducats;

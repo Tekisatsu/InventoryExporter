@@ -1,10 +1,11 @@
 package com.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Extends data for handling prime items.*/
-public class PrimeItem extends Data {
+public class PrimeItem extends Data implements Serializable {
     /**
      * @param amount Object will be turned into an int.
      * @param name Object will be turned into a string
