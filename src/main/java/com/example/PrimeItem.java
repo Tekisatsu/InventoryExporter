@@ -14,7 +14,7 @@ public class PrimeItem extends Data implements Serializable {
     PrimeItem(Object amount, Object name, Object ducats) {
         try {
             this.amount = Integer.parseInt(amount.toString());
-            this.name = name.toString();
+            this.name = name.toString().toUpperCase();
             this.ducats = Integer.parseInt(ducats.toString());
         }
         catch (NumberFormatException e) {
@@ -66,7 +66,7 @@ public class PrimeItem extends Data implements Serializable {
         for (int i = sIndex; i < split.length-1; i++) {
             name = name + split[i] + " ";
         }
-        result.add(name.trim());
+        result.add(name.trim().toUpperCase());
         result.add(d);
         return result;
     }

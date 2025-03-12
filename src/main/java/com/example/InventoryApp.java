@@ -35,10 +35,10 @@ public class InventoryApp extends Application {
         outputTextArea.setEditable(false);
         ItemsToFile itemsToFile = new ItemsToFile();
         BorderPane pane = new BorderPane();
-        Button add = new Button("Batch Add");
+        Button add = new Button("Add");
         add.setOnAction(e -> {
-            outputTextArea.clear();
-            String s = textArea.getText();
+            outputTextArea.setText("Items to be added:\n");
+            String s = textArea.getText().toUpperCase();
             ArrayList<ArrayList<Object>> arrayList = textAreaParse(s);
             for (int i = 0; i < arrayList.size(); i++) {
                 PrimeItem primeItem = new PrimeItem(arrayList.get(i).get(0), arrayList.get(i).get(1), arrayList.get(i).get(2));
@@ -63,13 +63,15 @@ public class InventoryApp extends Application {
         });
         Button search = new Button("Search");
         search.setOnAction(e -> {
-            String s = searchbar.getText();
+            outputTextArea.setText("Items found:\n");
+            String s = searchbar.getText().toUpperCase();
             searchItems(s);
         });
         Button remove = new Button("Remove");
         remove.setOnAction(e -> {
-            String s = searchbar.getText();
+            String s = searchbar.getText().toUpperCase();
             removeItems(s);
+            outputTextArea.clear();
         });
         HBox hbox1 = new HBox(add);
         HBox hbox2 = new HBox(readFile,save);
@@ -107,9 +109,8 @@ public class InventoryApp extends Application {
      * Searches for items that have match the given string.
      * @param s Name or part of the name of an item.*/
     public void searchItems(String s){
-        outputTextArea.clear();
         for (PrimeItem value : items.values()) {
-            if (value.getName().toLowerCase().contains(s.toLowerCase())) {
+            if (value.getName().contains(s)) {
                 outputTextArea.appendText(value.toString()+"\n");
             }
         }
@@ -118,10 +119,14 @@ public class InventoryApp extends Application {
      * Removes all items with the matching name.
      * @param s Name or part of the name do be deleted.*/
     public void removeItems(String s){
+        ArrayList<String> removeItems = new ArrayList<>();
         for (PrimeItem value : items.values()) {
-            if (value.getName().toLowerCase().contains(s.toLowerCase())) {
-                items.remove(value.getName());
+            if (value.getName().contains(s)) {
+                removeItems.add(value.getName());
             }
+        }
+        for (String item : removeItems) {
+            items.remove(item);
         }
     }
 }
