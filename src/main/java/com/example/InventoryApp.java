@@ -1,24 +1,20 @@
 package com.example;
 
 import javafx.application.Application;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class InventoryApp extends Application {
     TextArea textArea = new TextArea();
     TextArea outputTextArea = new TextArea();
-    ArrayList<PrimeItem> items = new ArrayList<>();
+    HashMap<String, PrimeItem> items = new HashMap<String,PrimeItem>();
 
     public static void main(String[] args) {
         launch(args);
@@ -35,21 +31,24 @@ public class InventoryApp extends Application {
         BorderPane pane = new BorderPane();
         Button add = new Button("Add");
         add.setOnAction(e -> {
+            outputTextArea.clear();
             String s = textArea.getText();
             ArrayList<ArrayList<Object>> arrayList = textAreaParse(s);
             for (int i = 0; i < arrayList.size(); i++) {
-                PrimeItem primeItem = new PrimeItem(arrayList.get(i).get(0),arrayList.get(i).get(1),arrayList.get(i).get(2));
-                items.add(primeItem);
-                System.out.println(primeItem.toString());
-                outputTextArea.appendText(items.get(i).toString()+"\n");
+                PrimeItem primeItem = new PrimeItem(arrayList.get(i).get(0), arrayList.get(i).get(1), arrayList.get(i).get(2));
+                if (items.containsKey(primeItem.getName())){
+                    items.remove(primeItem.getName());
+                }
+                items.put(primeItem.getName(),primeItem);
+                outputTextArea.appendText(items.get(primeItem.getName()).toString()+"\n");
             }
         });
         Button readFile = new Button("Read File");
         readFile.setOnAction(e -> {
             items = itemsToFile.read();
             outputTextArea.clear();
-            for (int i = 0; i < items.size(); i++) {
-                outputTextArea.appendText(items.get(i).toString()+"\n");
+            for (PrimeItem value : items.values()) {
+                outputTextArea.appendText(value.toString()+"\n");
             }
         });
         Button save = new Button("Save");

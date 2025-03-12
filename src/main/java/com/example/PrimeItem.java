@@ -59,7 +59,7 @@ public class PrimeItem extends Data implements Serializable {
         //Finding the Prime keyword for getting the correct data for name and ducats.
         //We are skipping the last index on purpose, as we already know they are not relevant for finding the name.
         //Do a less janky name parsing at some point.
-        int sIndex = 1;
+        int sIndex = 0;
         if (split[1].equals("X")) {
             sIndex = 2;
         }

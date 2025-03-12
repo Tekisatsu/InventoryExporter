@@ -1,7 +1,7 @@
 package com.example;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ItemsToFile implements FileHandling {
     String filename = "primeItems.txt";
@@ -19,7 +19,7 @@ public class ItemsToFile implements FileHandling {
         return filename;
     }
 
-    public void export (ArrayList<PrimeItem> items) {
+    public void export (HashMap<String,PrimeItem> items) {
         File file = new File(filename);
         if (!file.exists()) {
             try {file.createNewFile();}
@@ -39,11 +39,11 @@ public class ItemsToFile implements FileHandling {
             e.printStackTrace();
         }
     }
-    public ArrayList<PrimeItem> read () {
+    public HashMap<String,PrimeItem> read () {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
-            ArrayList<PrimeItem> items = new ArrayList<PrimeItem>();
-            items = (ArrayList<PrimeItem>) ois.readObject();
+            HashMap<String,PrimeItem> items = new HashMap<String,PrimeItem>();
+            items = (HashMap<String,PrimeItem>) ois.readObject();
             ois.close();
             return items;
         }
