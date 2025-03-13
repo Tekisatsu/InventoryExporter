@@ -50,6 +50,6 @@ abstract class Data implements Serializable {
 
     @Override
     public String toString() {
-        return "Name: "+name+", Amount: "+amount+", Ducats: "+ducats;
+        return name+", Amount: "+amount+", Ducats: "+ducats;
     }
 }

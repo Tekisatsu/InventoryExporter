@@ -27,11 +27,11 @@ public class InventoryApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        textArea.setPrefHeight(400);
+        textArea.setPrefHeight(424);
         textArea.setPrefWidth(450);
         outputTextArea.setPrefHeight(400);
         outputTextArea.setPrefWidth(450);
-        searchbar.setPrefWidth(160);
+        searchbar.setPrefWidth(300);
         outputTextArea.setEditable(false);
         ItemsToFile itemsToFile = new ItemsToFile();
         BorderPane pane = new BorderPane();
@@ -48,6 +48,10 @@ public class InventoryApp extends Application {
                 items.put(primeItem.getName(),primeItem);
                 outputTextArea.appendText(items.get(primeItem.getName()).toString()+"\n");
             }
+        });
+        Button clear = new Button("Clear");
+        clear.setOnAction(e -> {
+            textArea.setText("");
         });
         Button readFile = new Button("Read File");
         readFile.setOnAction(e -> {
@@ -73,11 +77,17 @@ public class InventoryApp extends Application {
             removeItems(s);
             outputTextArea.clear();
         });
-        HBox hbox1 = new HBox(add);
-        HBox hbox2 = new HBox(readFile,save);
+        Button refresh = new Button("Refresh");
+        refresh.setOnAction(e -> {
+            outputTextArea.clear();
+            for (PrimeItem value : items.values()) {
+                outputTextArea.appendText(value.toString()+"\n");
+            }
+        });
+        HBox hbox1 = new HBox(add,clear);
+        HBox hbox2 = new HBox(readFile,save,refresh);
         HBox hbox3 = new HBox(searchbar,search,remove);
-        HBox rTopHbox = new HBox(hbox2,hbox3);
-        VBox rVbox = new VBox(rTopHbox,outputTextArea);
+        VBox rVbox = new VBox(hbox2,hbox3,outputTextArea);
         VBox lVbox = new VBox(hbox1,textArea);
         hbox1.setSpacing(5);
         hbox2.setSpacing(5);
