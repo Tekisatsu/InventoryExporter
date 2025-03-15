@@ -1,7 +1,6 @@
 package com.example;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -12,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 /**
  * JavaFX GUI for the application.*/
@@ -40,13 +40,16 @@ public class InventoryApp extends Application {
             outputTextArea.setText("Items to be added:\n");
             String s = textArea.getText().toUpperCase();
             ArrayList<ArrayList<Object>> arrayList = textAreaParse(s);
+            ArrayList<String> alphabetical = new ArrayList<>();
             for (int i = 0; i < arrayList.size(); i++) {
                 PrimeItem primeItem = new PrimeItem(arrayList.get(i).get(0), arrayList.get(i).get(1), arrayList.get(i).get(2));
-                if (items.containsKey(primeItem.getName())){
-                    items.remove(primeItem.getName());
-                }
+                items.remove(primeItem.getName());
                 items.put(primeItem.getName(),primeItem);
-                outputTextArea.appendText(items.get(primeItem.getName()).toString()+"\n");
+                alphabetical.add(primeItem.toString());
+            }
+            Collections.sort(alphabetical);
+            for (int i = 0; i < alphabetical.size(); i++) {
+                outputTextArea.appendText(alphabetical.get(i) + "\n");
             }
         });
         Button clear = new Button("Clear");
@@ -57,8 +60,13 @@ public class InventoryApp extends Application {
         readFile.setOnAction(e -> {
             items = itemsToFile.read();
             outputTextArea.clear();
+            ArrayList<String> alphabetical = new ArrayList<>();
             for (PrimeItem value : items.values()) {
-                outputTextArea.appendText(value.toString()+"\n");
+                alphabetical.add(value.toString());
+            }
+            Collections.sort(alphabetical);
+            for (int i = 0; i < alphabetical.size(); i++) {
+                outputTextArea.appendText(alphabetical.get(i) + "\n");
             }
         });
         Button save = new Button("Save File");
@@ -80,8 +88,13 @@ public class InventoryApp extends Application {
         Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> {
             outputTextArea.clear();
+            ArrayList<String> alphabetical = new ArrayList<>();
             for (PrimeItem value : items.values()) {
-                outputTextArea.appendText(value.toString()+"\n");
+                alphabetical.add(value.toString());
+            }
+            Collections.sort(alphabetical);
+            for (int i = 0; i < alphabetical.size(); i++) {
+                outputTextArea.appendText(alphabetical.get(i) + "\n");
             }
         });
         HBox hbox1 = new HBox(add,clear);
@@ -119,10 +132,15 @@ public class InventoryApp extends Application {
      * Searches for items that have match the given string.
      * @param s Name or part of the name of an item.*/
     public void searchItems(String s){
+        ArrayList<String> alphabetical = new ArrayList<>();
         for (PrimeItem value : items.values()) {
             if (value.getName().contains(s)) {
-                outputTextArea.appendText(value.toString()+"\n");
+                alphabetical.add(value.toString());
             }
+        }
+        Collections.sort(alphabetical);
+        for (int i = 0; i < alphabetical.size(); i++) {
+            outputTextArea.appendText(alphabetical.get(i) + "\n");
         }
     }
     /**
