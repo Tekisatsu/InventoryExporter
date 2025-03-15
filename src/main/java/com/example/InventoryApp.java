@@ -1,10 +1,9 @@
 package com.example;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,7 +32,20 @@ public class InventoryApp extends Application {
         outputTextArea.setPrefWidth(450);
         searchbar.setPrefWidth(300);
         outputTextArea.setEditable(false);
+        outputTextArea.setWrapText(true);
         ItemsToFile itemsToFile = new ItemsToFile();
+        Menu fileMenu = new Menu("File");
+        Menu viewMenu = new Menu("View");
+        MenuItem refresh = new MenuItem("Refresh");
+        Menu clear = new Menu("Clear");
+        MenuItem clearInput = new MenuItem("Clear Input");
+        MenuItem clearOutput = new MenuItem("Clear Output");
+        clear.getItems().addAll(clearInput, clearOutput);
+        viewMenu.getItems().addAll(refresh,clear);
+        MenuItem open = new MenuItem("Open");
+        MenuItem save = new MenuItem("Save");
+        fileMenu.getItems().addAll(open, save);
+        MenuBar menuBar = new MenuBar(fileMenu,viewMenu);
         BorderPane pane = new BorderPane();
         Button add = new Button("Add");
         add.setOnAction(e -> {
@@ -52,12 +64,13 @@ public class InventoryApp extends Application {
                 outputTextArea.appendText(alphabetical.get(i) + "\n");
             }
         });
-        Button clear = new Button("Clear");
-        clear.setOnAction(e -> {
+        clearInput.setOnAction(e -> {
             textArea.setText("");
         });
-        Button readFile = new Button("Read File");
-        readFile.setOnAction(e -> {
+        clearOutput.setOnAction(e -> {
+            outputTextArea.setText("");
+        });
+        open.setOnAction(e -> {
             items = itemsToFile.read();
             outputTextArea.clear();
             ArrayList<String> alphabetical = new ArrayList<>();
@@ -69,7 +82,6 @@ public class InventoryApp extends Application {
                 outputTextArea.appendText(alphabetical.get(i) + "\n");
             }
         });
-        Button save = new Button("Save File");
         save.setOnAction(e -> {
             itemsToFile.export(items);
         });
@@ -85,7 +97,6 @@ public class InventoryApp extends Application {
             removeItems(s);
             outputTextArea.clear();
         });
-        Button refresh = new Button("Refresh");
         refresh.setOnAction(e -> {
             outputTextArea.clear();
             ArrayList<String> alphabetical = new ArrayList<>();
@@ -97,16 +108,16 @@ public class InventoryApp extends Application {
                 outputTextArea.appendText(alphabetical.get(i) + "\n");
             }
         });
-        HBox hbox1 = new HBox(add,clear);
-        HBox hbox2 = new HBox(readFile,save,refresh);
+        HBox hbox1 = new HBox(add);
+        hbox1.setAlignment(Pos.BOTTOM_RIGHT);
         HBox hbox3 = new HBox(searchbar,search,remove);
-        VBox rVbox = new VBox(hbox2,hbox3,outputTextArea);
-        VBox lVbox = new VBox(hbox1,textArea);
+        VBox rVbox = new VBox(hbox3,outputTextArea);
+        VBox lVbox = new VBox(textArea,hbox1);
         hbox1.setSpacing(5);
-        hbox2.setSpacing(5);
         hbox3.setSpacing(5);
         pane.setLeft(lVbox);
         pane.setRight(rVbox);
+        pane.setTop(menuBar);
         Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("WF Inventory Exporter");
