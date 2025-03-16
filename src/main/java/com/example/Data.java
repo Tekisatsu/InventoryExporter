@@ -2,7 +2,9 @@ package com.example;
 
 import java.io.Serializable;
 import java.util.Objects;
-
+/**
+ * Abstract class used for standard functions and general fields items nee.
+ * Avoid using the name setter in this class.*/
 abstract class Data implements Serializable {
     String name;
     Integer amount;

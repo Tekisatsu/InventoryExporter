@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Extends data for handling prime items.*/
+ * Extends data for dealing with prime items.*/
 public class PrimeItem extends Data implements Serializable {
     /**
      * @param amount Object will be turned into an int.

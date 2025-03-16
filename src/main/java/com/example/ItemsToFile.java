@@ -3,6 +3,8 @@ package com.example;
 import java.io.*;
 import java.util.HashMap;
 
+/**
+ * Class for reading and writing HashMap of PrimeItems into a file.*/
 public class ItemsToFile implements FileHandling {
     String filename = "primeItems.txt";
     public void setFilename(String filename) {
@@ -19,6 +21,9 @@ public class ItemsToFile implements FileHandling {
         return filename;
     }
 
+    /**
+     * Exports the hashMap of items into a file.
+     * @param items HashMap of items to be saved into a file.*/
     public void export (HashMap<String,PrimeItem> items) {
         File file = new File(filename);
         if (!file.exists()) {
@@ -39,6 +44,9 @@ public class ItemsToFile implements FileHandling {
             e.printStackTrace();
         }
     }
+    /**
+     * Reads a file.
+     * @return HashMap of items in the file.*/
     public HashMap<String,PrimeItem> read () {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
